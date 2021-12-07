@@ -29,12 +29,21 @@ The dataset for this project includes twenty-one WSI with ink, H&E stained. The 
 
 
 #### Algorithm
-#####	Step 1: Find ink in Whole Slide Images.
+##### Step 1: Find ink in Whole Slide Images.
 Firstly, we create a list with all images’ path to loop throughout the dataset. This is achieved with ```os.listdir()``` function.
 Next, ```MatchbyColor()``` function was specifically created to check for all 5 ink colour’s types: green, blue, yellow, red and black. The function takes 3 arguments: ```src```, which correspond to the source image; ```lower``` and ```upper```, which represent lower and upper bounds of ```cv2.inRange()``` sub-function.
 A list of three RGB colors ranges was created to cover all the possible ink types of an image could have: green-blue, yellow-red, black. Each colour range has a lower and upper bound. 
  Once these ranges are passed to ```cv2.inRange()``` sub-function, a mask (black or background; white or foreground) of the corresponded colour is outputted and passed to ```cv2.countNonZero()``` function, where it will count how many white pixels are present in the mask. If at least one white pixel exists, then it means that ```cv2.inRange()``` founded the specific colour ink and ```MatchbyColor()``` function will output a ```True``` Boolean value, ```False``` otherwise. This output will be used by ```selectImageWithInk()``` to select the corresponding image in case of ```True``` value and save it into a new folder called 'Ink check' that will automatically create.
 
+##### Step 2: Select HSV range values.
+In this step we will use HSV colour space to extract each colour ink type from WSI. 
+First, we start with selecting one WSI with ink and we target one specific ink colour type, e.g. green, and we use a **trackbar** to choose the correct lower and upper HSV boundaries for the green ink. A trackbar was used to visually see in real-time which set of values better thresholded the corresponding ink colour.
+A trackbar is a GUI element that let the user to select a specific value within a range of values by sliding a slider linearly. It limits the user to select a specific value with its minimum and maximum limits. Trackbars in OpenCV are helpful to tweak a variable value instantly without closing and relaunching the program. 
+The OpenCV library provides the ```cv2.createTrackbar()``` function. To read and change the current position of the trackbar slider, ```cv2.getTrackbarPos()``` and ```cv2.setTrackbarPos()``` functions were used respectively. The GUI will display 6 trackbars where will correspond to *low Hue, low Saturation, low Value, upper Hue, upper Saturation, upper Value*. While adjusting lower and upper boundaries, it is shown in real time how the image is being thresholded based on the HSV value. Once founded the best values, the user can save the array values and they will be printed out. 
+
+##### Step 3: Create a mask for each Ink type.
+Next, each array founded with the trackbar represents a lower and upper boundary of a specific colour range, and these boundaries will be the arguments for ```cv2.inRange()```, where the src image is in HSV mode, converted with ```cv2.COLOR_BGR2HSV``` method from OpenCV library. Here, a binary mask will be generated where white pixel represents the foreground or targeted ink, and black pixel represents the background. Next, ```cv2.bitwise_and()``` is unifying the arrays of the original image and the mask, resulting in a mask where only the thresholded ink is present, now in RGB colors. This is an important step which allows to check that only the specific ink colour was thresholded and no other regions (e.g. tissue, nuclei). 
+Once we confirm that each mask is correctly identifying the ink, all five masks are combined to form one unique mask that will be used to encounter the ink present in the WSI. Finally, the ```InkRemoval()``` function will use this final mask to convert the ink pixels to white, which is the background colour of the WSI. As output, an image without ink will be saved in the Ink Removed directory automatically
 
 
 
