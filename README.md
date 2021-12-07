@@ -45,6 +45,13 @@ The OpenCV library provides the ```cv2.createTrackbar()``` function. To read and
 Next, each array founded with the trackbar represents a lower and upper boundary of a specific colour range, and these boundaries will be the arguments for ```cv2.inRange()```, where the src image is in HSV mode, converted with ```cv2.COLOR_BGR2HSV``` method from OpenCV library. Here, a binary mask will be generated where white pixel represents the foreground or targeted ink, and black pixel represents the background. Next, ```cv2.bitwise_and()``` is unifying the arrays of the original image and the mask, resulting in a mask where only the thresholded ink is present, now in RGB colors. This is an important step which allows to check that only the specific ink colour was thresholded and no other regions (e.g. tissue, nuclei). 
 Once we confirm that each mask is correctly identifying the ink, all five masks are combined to form one unique mask that will be used to encounter the ink present in the WSI. Finally, the ```InkRemoval()``` function will use this final mask to convert the ink pixels to white, which is the background colour of the WSI. As output, an image without ink will be saved in the Ink Removed directory automatically
 
+<p align="center">
+<img src="Images/yellow.png?raw=true" width="200" height="200"><img src="Images/selected_34.png?raw=true" width="200" height="200">
+  <img src="Images/mask_study n.172.png?raw=true" width="200" height="200"><img src="Images/result_study n.172.png?raw=true" width="200" height="200">
+  <br>
+  <em>Figure 2. yellow mask</em>
+</p>
+
 
 
 
