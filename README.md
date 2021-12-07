@@ -13,9 +13,10 @@ The following are some of the benefits of using a variety of ink colors:
 Indeed, the presence or absence of ink is frequently the deciding factor in whether the margin is positive for tumor cells. 
 In order to avoid error of interpretation, the most used colors are black, green, red, blue and yellow.
 
-![alt text](https://github.com/laurapurcaro-bit/InkRemovalWSI/Images/Picture1.png)
-
-
+<p align="center">
+<img src="Images/Picture1.png?raw=true" width="700" height="200"><br>
+  <em>Figure 1. Examples of ink in surgical pathology specimens</em>
+</p>
 
 
 
